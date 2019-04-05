@@ -94,39 +94,6 @@ namespace RovShapeRecognition
             findShapes(imgInput);
         }
 
-        public int Get(Mat mat, int index)
-        {
-            if (mat.Depth != Emgu.CV.CvEnum.DepthType.Cv32S)
-            {
-                throw new ArgumentOutOfRangeException("ContourData must have Cv32S hierarchy element type.");
-            }
-            if (mat.Rows != 1)
-            {
-                throw new ArgumentOutOfRangeException("ContourData must have one hierarchy hierarchy row.");
-            }
-            if (mat.NumberOfChannels != 4)
-            {
-                throw new ArgumentOutOfRangeException("ContourData must have four hierarchy channels.");
-            }
-            if (mat.Dims != 2)
-            {
-                throw new ArgumentOutOfRangeException("ContourData must have two dimensional hierarchy.");
-            }
-            long elementStride = mat.ElementSize / sizeof(Int32);
-            var offset = (long)mat + index * elementStride;
-            if (0 <= offset && offset < Hierarchy.Total.ToInt64() * elementStride)
-            {
-                unsafe
-                {
-                    return *((Int32*)Hierarchy.DataPointer.ToPointer() + offset);
-                }
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
         private void findShapes(Image<Bgr, byte> imgInput)
         {
             Image<Gray, byte> imgCanny = new Image<Gray, byte>(imgInput.Width, imgInput.Height, new Gray(0));
